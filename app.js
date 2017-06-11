@@ -8,19 +8,42 @@ angular.module('LunchCheckerApp', [])
 LunchCheckerController.$inject = ['$scope'];
 
 function LunchCheckerController($scope) {
-   $scope.name = "lunch checker";
    $scope.checkLunch = function () {
-     var array = $scope.lunchMeals.split(',');
-     console.log( array.length);
+     // doing empty string check
+     if(!$scope.lunchMeals || 0 === $scope.lunchMeals.length ){
+       $scope.customStyle = {
+        "color" : "red",
+      }
+       $scope.message = "Please enter data first";
+       return;
+     }
 
-     if(array.length > 3){
-       $scope.message = "Too much!";
+     setLunchItemSize($scope);
+
+     if($scope.lunchItemSize> 3){
+         $scope.customStyle = {
+          "color" : "red",
+        }
+        $scope.message = "Too much!";
      }
      else{
-       $scope.message = "Enjoy!";
+         $scope.customStyle = {
+          "color" : "green",
+        }
+        $scope.message = "Enjoy!";
      }
 
    };
+
+   function setLunchItemSize($scope) {
+     var array = $scope.lunchMeals.split(',');
+     var lunchItemSize= 0;
+     for(var i=0; i<array.length; i++){
+       if(array[i] &&  0 < array[i].length)
+        lunchItemSize++;
+     }
+     $scope.lunchItemSize = lunchItemSize;
+   }
 }
 
 })();
